@@ -2,7 +2,7 @@ using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
 namespace KS.Fiks.IO.Encryption.Asic;
 
-internal class AsicEncrypter(
+public class AsicEncrypter(
     IAsiceBuilderFactory asiceBuilderFactory,
     IEncryptionServiceFactory encryptionServiceFactory,
     ICertificateHolder signingCertificateHolder = null)
@@ -16,7 +16,7 @@ internal class AsicEncrypter(
         return ZipAndEncrypt(publicKey, payloads);
     }
 
-    private void ThrowIfEmpty(IEnumerable<IPayload> payloads)
+    private static void ThrowIfEmpty(IEnumerable<IPayload> payloads)
     {
         if (payloads == null)
         {
