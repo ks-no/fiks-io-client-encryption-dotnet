@@ -12,6 +12,11 @@ public class AsicEncrypter(
 
     public Stream Encrypt(X509Certificate publicKey, IList<IPayload> payloads)
     {
+        if (publicKey == null)
+        {
+            throw new ArgumentNullException(nameof(publicKey));
+        }
+        
         ThrowIfEmpty(payloads);
         return ZipAndEncrypt(publicKey, payloads);
     }
