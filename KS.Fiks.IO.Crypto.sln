@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.Fiks.IO.Encryption", "KS.Fiks.IO.Encryption\KS.Fiks.IO.Encryption.csproj", "{DDBB2EDA-C1DD-471F-9D82-568138C424FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.Fiks.IO.Crypto", "KS.Fiks.IO.Crypto\KS.Fiks.IO.Crypto.csproj", "{DDBB2EDA-C1DD-471F-9D82-568138C424FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.Fiks.IO.Encryption.Tests", "KS.Fiks.IO.Encryption.Tests\KS.Fiks.IO.Encryption.Tests.csproj", "{037A0089-DE7A-499C-9912-CCBEA3BD5092}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.Fiks.IO.Crypto.Tests", "KS.Fiks.IO.Crypto.Tests\KS.Fiks.IO.Crypto.Tests.csproj", "{037A0089-DE7A-499C-9912-CCBEA3BD5092}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

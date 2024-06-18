@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
         <VersionPrefix>1.0.2</VersionPrefix>
+        <RootNamespace>KS.Fiks.IO.Encryption</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
