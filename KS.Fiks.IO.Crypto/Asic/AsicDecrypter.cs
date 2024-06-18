@@ -1,4 +1,7 @@
-namespace KS.Fiks.IO.Encryption.Asic;
+using KS.Fiks.IO.Crypto.Exceptions;
+using KS.Fiks.IO.Crypto.Models;
+
+namespace KS.Fiks.IO.Crypto.Asic;
 
 internal class AsicDecrypter(IDecryptionService decryptionService) : IAsicDecrypter
 {

@@ -1,4 +1,6 @@
-namespace KS.Fiks.IO.Encryption.Asic;
+using KS.Fiks.IO.Crypto.Models;
+
+namespace KS.Fiks.IO.Crypto.Asic;
 
 public interface IAsicDecrypter
 {

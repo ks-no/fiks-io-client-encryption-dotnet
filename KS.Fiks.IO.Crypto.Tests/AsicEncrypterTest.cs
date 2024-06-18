@@ -1,10 +1,9 @@
-using System.Text;
 using KS.Fiks.ASiC_E;
 using KS.Fiks.ASiC_E.Crypto;
 using KS.Fiks.ASiC_E.Model;
 using KS.Fiks.Crypto;
-using KS.Fiks.IO.Encryption.Asic;
-using KS.Fiks.IO.Encryption.Models;
+using KS.Fiks.IO.Crypto.Asic;
+using KS.Fiks.IO.Crypto.Models;
 using Moq;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
@@ -16,7 +15,7 @@ using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.X509;
 using Shouldly;
 
-namespace KS.Fiks.IO.Encryption.Tests;
+namespace KS.Fiks.IO.Crypto.Tests;
 
 public class AsicEncrypterTests
 {

@@ -7,7 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <RootNamespace>KS.Fiks.IO.Encryption.Tests</RootNamespace>
+        <RootNamespace>KS.Fiks.IO.Crypto.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

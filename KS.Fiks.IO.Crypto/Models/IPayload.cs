@@ -1,4 +1,4 @@
-namespace KS.Fiks.IO.Encryption.Models;
+namespace KS.Fiks.IO.Crypto.Models;
 
 public interface IPayload
 {

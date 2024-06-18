@@ -1,4 +1,6 @@
-namespace KS.Fiks.IO.Encryption.Asic;
+using KS.Fiks.IO.Crypto.Configuration;
+
+namespace KS.Fiks.IO.Crypto.Asic;
 
 public static class AsicSigningCertificateHolderFactory
 {

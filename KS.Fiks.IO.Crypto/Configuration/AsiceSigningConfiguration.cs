@@ -1,4 +1,4 @@
-namespace KS.Fiks.IO.Encryption.Configuration;
+namespace KS.Fiks.IO.Crypto.Configuration;
 
 public class AsiceSigningConfiguration
 {

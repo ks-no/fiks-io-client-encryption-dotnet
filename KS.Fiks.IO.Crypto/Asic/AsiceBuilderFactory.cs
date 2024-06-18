@@ -1,4 +1,4 @@
-namespace KS.Fiks.IO.Encryption.Asic;
+namespace KS.Fiks.IO.Crypto.Asic;
 
 public class AsiceBuilderFactory : IAsiceBuilderFactory
 {

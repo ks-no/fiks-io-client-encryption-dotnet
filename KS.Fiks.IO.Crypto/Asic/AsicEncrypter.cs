@@ -1,6 +1,7 @@
+using KS.Fiks.IO.Crypto.Models;
 using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
-namespace KS.Fiks.IO.Encryption.Asic;
+namespace KS.Fiks.IO.Crypto.Asic;
 
 public class AsicEncrypter(
     IAsiceBuilderFactory asiceBuilderFactory,

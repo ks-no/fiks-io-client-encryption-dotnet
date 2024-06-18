@@ -1,4 +1,4 @@
-namespace KS.Fiks.IO.Encryption.Exceptions;
+namespace KS.Fiks.IO.Crypto.Exceptions;
 
 public class FiksIODecryptionException : Exception
 {
