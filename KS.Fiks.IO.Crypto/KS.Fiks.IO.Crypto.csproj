@@ -1,16 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <Title>KS Fiks IO Crypto</Title>
+        <VersionPrefix>1.0.0</VersionPrefix>
+        <RootNamespace>KS.Fiks.IO.Crypto</RootNamespace>
+        <PackageProjectUrl>https://github.com/ks-no/fiks-io-client-encryption-dotnet</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ks-no/fiks-io-client-encryption-dotnet.git</RepositoryUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageIcon>KS.png</PackageIcon>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>FIKS</PackageTags>
+        <Authors>Ks-Kommunesektorens Organisasjon</Authors>
+        <Copyright>Ks-Kommunesektorens Organisasjon</Copyright>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
-        <VersionPrefix>1.0.0</VersionPrefix>
-        <RootNamespace>KS.Fiks.IO.Crypto</RootNamespace>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>ks-fiks-io-crypto.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="KS.Fiks.ASiC-E" Version="2.0.1" />
       <PackageReference Include="KS.Fiks.Crypto" Version="2.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="KS.png">
+            <Pack>true</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+        <None Include="../LICENSE">
+            <Pack>true</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+        <None Include="../README.md">
+            <Pack>true</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
     </ItemGroup>
 
 </Project>
