@@ -22,11 +22,6 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)'=='Release'">
-        <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>ks-fiks-io-crypto.snk</AssemblyOriginatorKeyFile>
-    </PropertyGroup>
-
     <ItemGroup>
       <PackageReference Include="KS.Fiks.ASiC-E" Version="2.0.1" />
       <PackageReference Include="KS.Fiks.Crypto" Version="2.0.2" />
