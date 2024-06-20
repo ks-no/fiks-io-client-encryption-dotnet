@@ -3,7 +3,7 @@ using KS.Fiks.IO.Crypto.Models;
 
 namespace KS.Fiks.IO.Crypto.Asic;
 
-internal class AsicDecrypter(IDecryptionService decryptionService) : IAsicDecrypter
+public class AsicDecrypter(IDecryptionService decryptionService) : IAsicDecrypter
 {
     public async Task WriteDecrypted(Task<Stream> encryptedZipStream, string outPath)
     {
