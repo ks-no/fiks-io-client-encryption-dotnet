@@ -29,7 +29,8 @@ public class AsicEncrypterTests
         _mockAsiceBuilderFactory = new Mock<IAsiceBuilderFactory>();
         _mockEncryptionServiceFactory = new Mock<IEncryptionServiceFactory>();
         _mockCertificateHolder = new Mock<ICertificateHolder>();
-        _asicEncrypter = new AsicEncrypter(_mockAsiceBuilderFactory.Object, _mockEncryptionServiceFactory.Object, _mockCertificateHolder.Object);
+        _asicEncrypter = new AsicEncrypter(_mockAsiceBuilderFactory.Object, _mockEncryptionServiceFactory.Object,
+            _mockCertificateHolder.Object);
     }
 
     [Fact]
@@ -58,27 +59,30 @@ public class AsicEncrypterTests
 
         Should.Throw<ArgumentException>(() => _asicEncrypter.Encrypt(publicKey, payloads));
     }
-    
-[Fact]
-public void Encrypt_ShouldNotThrow_WhenGivenValidInputs()
-{
-    X509Certificate publicKey = GenerateCertificate();
 
-    var mockPayload = new Mock<IPayload>();
-    mockPayload.Setup(p => p.Payload).Returns(new MemoryStream("Test payload"u8.ToArray()));
-    _mockAsiceBuilderFactory.Setup(b => b.GetBuilder(It.IsAny<MemoryStream>(), It.IsAny<MessageDigestAlgorithm>(), It.IsAny<ICertificateHolder>())).Returns(new Mock<IAsiceBuilder<AsiceArchive>>().Object);
-    _mockEncryptionServiceFactory.Setup(f => f.Create(publicKey)).Returns(new Mock<IEncryptionService>().Object);
-    IList<IPayload> payloads = new List<IPayload> { mockPayload.Object };
+    [Fact]
+    public void Encrypt_ShouldNotThrow_WhenGivenValidInputs()
+    {
+        X509Certificate publicKey = GenerateCertificate();
 
-    Should.NotThrow(() => _asicEncrypter.Encrypt(publicKey, payloads));
-}
+        var mockPayload = new Mock<IPayload>();
+        mockPayload.Setup(p => p.Payload).Returns(new MemoryStream("Test payload"u8.ToArray()));
+        _mockAsiceBuilderFactory
+            .Setup(b => b.GetBuilder(It.IsAny<MemoryStream>(), It.IsAny<MessageDigestAlgorithm>(),
+                It.IsAny<ICertificateHolder>())).Returns(new Mock<IAsiceBuilder<AsiceArchive>>().Object);
+        _mockEncryptionServiceFactory.Setup(f => f.Create(publicKey)).Returns(new Mock<IEncryptionService>().Object);
+        IList<IPayload> payloads = new List<IPayload> { mockPayload.Object };
+
+        Should.NotThrow(() => _asicEncrypter.Encrypt(publicKey, payloads));
+    }
 
     public X509Certificate GenerateCertificate()
     {
         var randomGenerator = new SecureRandom();
         var certificateGenerator = new X509V3CertificateGenerator();
 
-        var serialNumber = BigIntegers.CreateRandomInRange(BigInteger.One, BigInteger.ValueOf(long.MaxValue), randomGenerator);
+        var serialNumber =
+            BigIntegers.CreateRandomInRange(BigInteger.One, BigInteger.ValueOf(long.MaxValue), randomGenerator);
         certificateGenerator.SetSerialNumber(serialNumber);
 
         var dirName = "CN=Test Certificate";
