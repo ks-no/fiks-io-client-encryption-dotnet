@@ -1,6 +1,8 @@
 using System.Text;
+using KS.Fiks.ASiC_E;
 using KS.Fiks.ASiC_E.Crypto;
 using KS.Fiks.ASiC_E.Model;
+using KS.Fiks.Crypto;
 using KS.Fiks.IO.Crypto.Models;
 using Moq;
 using Org.BouncyCastle.X509;
@@ -10,19 +12,49 @@ namespace KS.Fiks.IO.Crypto.Tests.Asic;
 
 public class AsicEncrypterTests : IDisposable
 {
-    private AsicEncrypterFixture _fixture;
+    private readonly AsicEncrypterFixture _fixture = new();
     private readonly Mock<X509Certificate> _publicKeyMock = new();
-
-    public AsicEncrypterTests()
+    
+    [Fact]
+    public void Encrypt_ShouldThrowArgumentNullException_WhenPublicKeyIsNull()
     {
-        _fixture = new AsicEncrypterFixture();
+        var sut = _fixture.CreateSut();
+        Should.Throw<ArgumentNullException>(() => sut.Encrypt(null, new List<IPayload>()));
     }
 
     [Fact]
-    public void ReturnsANonNullStream()
+    public void Encrypt_ShouldThrowArgumentException_WhenPayloadsIsEmpty()
     {
         var sut = _fixture.CreateSut();
+        Should.Throw<ArgumentException>(() => sut.Encrypt(_publicKeyMock.Object, new List<IPayload>()));
+    }
 
+    [Fact]
+    public void Encrypt_ShouldThrowArgumentException_WhenPayloadsIsNull()
+    {
+        var sut = _fixture.CreateSut();
+        Should.Throw<ArgumentException>(() => sut.Encrypt(_publicKeyMock.Object, null));
+    }
+
+    [Fact]
+    public void Encrypt_ShouldNotThrow_WhenGivenValidInputs()
+    {
+        var mockPayload = new Mock<IPayload>();
+        mockPayload.Setup(p => p.Payload).Returns(new MemoryStream("Test payload"u8.ToArray()));
+        _fixture.AsiceBuilderFactoryMock
+            .Setup(b => b.GetBuilder(It.IsAny<MemoryStream>(), It.IsAny<MessageDigestAlgorithm>(),
+                It.IsAny<ICertificateHolder>())).Returns(new Mock<IAsiceBuilder<AsiceArchive>>().Object);
+        _fixture.EncryptionServiceFactoryMock.Setup(f => f.Create(_publicKeyMock.Object)).Returns(new Mock<IEncryptionService>().Object);
+        IList<IPayload> payloads = new List<IPayload> { mockPayload.Object };
+        var sut = _fixture.CreateSut();
+
+        Should.NotThrow(() => sut.Encrypt(_publicKeyMock.Object, payloads));
+    }
+
+    [Fact]
+    public void Encrypt_ReturnsNonNullStream_WhenValidInput()
+    {
+        var sut = _fixture.CreateSut();
         var payload = new StreamPayload(_fixture.RandomStream, "filename.file");
 
         var outStream = sut.Encrypt(_publicKeyMock.Object, new List<IPayload> {payload});
@@ -31,31 +63,29 @@ public class AsicEncrypterTests : IDisposable
     }
 
     [Fact]
-    public void CallsAsiceBuilderAddFile()
+    public void Encrypt_CallsAsiceBuilderAddFile_WhenValidInput()
     {
         var sut = _fixture.CreateSut();
-
         var payload = new StreamPayload(_fixture.RandomStream, "filename.file");
 
         var outStream = sut.Encrypt(_publicKeyMock.Object, new List<IPayload> {payload});
 
-        _fixture.AsiceBuilderMock.Verify(_ => _.AddFile(payload.Payload, payload.Filename));
+        _fixture.AsiceBuilderMock.Verify(builder => builder.AddFile(payload.Payload, payload.Filename));
     }
 
     [Fact]
-    public void AsiceBuilderIsDisposed()
+    public void Encrypt_AsiceBuilderIsDisposed()
     {
         var sut = _fixture.CreateSut();
-
         var payload = new StreamPayload(_fixture.RandomStream, "filename.file");
 
         var outStream = sut.Encrypt(_publicKeyMock.Object, new List<IPayload> {payload});
 
-        _fixture.AsiceBuilderMock.Verify(_ => _.Dispose());
+        _fixture.AsiceBuilderMock.Verify(builder => builder.Dispose());
     }
 
     [Fact]
-    public void ReturnsExpectedStream()
+    public void Encrypt_ReturnsExpectedStream_WhenValidInput()
     {
         var expectedOutputString = "myStringToSend";
         var expectedOutStream = new MemoryStream(Encoding.UTF8.GetBytes(expectedOutputString));
@@ -74,7 +104,7 @@ public class AsicEncrypterTests : IDisposable
     }
 
     [Fact]
-    public void CallsEncryptWithoutSigning()
+    public void Encrypt_CallsBuilderWithoutSigning()
     {
         var expectedOutputString = "myStringToSend";
         var expectedZipStream = new MemoryStream(Encoding.UTF8.GetBytes(expectedOutputString));
@@ -96,17 +126,15 @@ public class AsicEncrypterTests : IDisposable
     }
 
     [Fact]
-    public void CallsEncryptWithSigning()
+    public void Encrypt_CallsBuilderWithSigning()
     {
         var expectedOutputString = "myStringToSend";
         var expectedZipStream = new MemoryStream(Encoding.UTF8.GetBytes(expectedOutputString));
-
         var sut = _fixture.WithContentAsZipStreamed(expectedZipStream).CreateSutWithAsicSigning();
-
         var payload = new StreamPayload(_fixture.RandomStream, "filename.file");
 
-        var outStream = sut.Encrypt(_publicKeyMock.Object, new List<IPayload> {payload});
-
+        sut.Encrypt(_publicKeyMock.Object, new List<IPayload> {payload});
+        
         _fixture.EncryptionServiceMock.Verify(
             _ => _.Encrypt(
                 It.IsAny<Stream>(),
@@ -117,13 +145,6 @@ public class AsicEncrypterTests : IDisposable
                 It.IsAny<MessageDigestAlgorithm>(),
                 It.IsAny<ICertificateHolder>()));
 
-    }
-
-    [Fact]
-    public void ThrowsIfPayloadIsEmpty()
-    {
-        var sut = _fixture.CreateSut();
-        Assert.Throws<ArgumentException>(() => { sut.Encrypt(_publicKeyMock.Object, new List<IPayload>()); });
     }
 
     public void Dispose()

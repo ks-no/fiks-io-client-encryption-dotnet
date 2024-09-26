@@ -11,7 +11,13 @@ namespace KS.Fiks.IO.Crypto.Tests.Asic;
 
 internal class AsicEncrypterFixture : IDisposable
 {
-    private readonly Mock<IEncryptionServiceFactory> _encryptionServiceFactoryMock;
+    public Mock<IAsiceBuilderFactory> AsiceBuilderFactoryMock { get; }
+
+    public Mock<IAsiceBuilder<AsiceArchive>> AsiceBuilderMock { get; }
+
+    public Mock<IEncryptionService> EncryptionServiceMock { get; }
+    
+    public Mock<IEncryptionServiceFactory> EncryptionServiceFactoryMock { get; }
     private readonly CertHolderMock _certificateHolder;
     private Stream _outZipStream;
     private Stream _outEncryptedZipStream;
@@ -19,17 +25,11 @@ internal class AsicEncrypterFixture : IDisposable
     public AsicEncrypterFixture()
     {
         AsiceBuilderFactoryMock = new Mock<IAsiceBuilderFactory>();
-        _encryptionServiceFactoryMock = new Mock<IEncryptionServiceFactory>();
+        EncryptionServiceFactoryMock = new Mock<IEncryptionServiceFactory>();
         AsiceBuilderMock = new Mock<IAsiceBuilder<AsiceArchive>>();
         EncryptionServiceMock = new Mock<IEncryptionService>();
         _certificateHolder = new CertHolderMock(null, null);
     }
-
-    public Mock<IAsiceBuilderFactory> AsiceBuilderFactoryMock { get; }
-
-    public Mock<IAsiceBuilder<AsiceArchive>> AsiceBuilderMock { get; }
-
-    public Mock<IEncryptionService> EncryptionServiceMock { get; }
 
     public AsicEncrypterFixture WithContentAsZipStreamed(Stream stream)
     {
@@ -53,14 +53,14 @@ internal class AsicEncrypterFixture : IDisposable
     {
         SetDefaults();
         SetupMocks();
-        return new AsicEncrypter(AsiceBuilderFactoryMock.Object, _encryptionServiceFactoryMock.Object);
+        return new AsicEncrypter(AsiceBuilderFactoryMock.Object, EncryptionServiceFactoryMock.Object);
     }
 
     internal AsicEncrypter CreateSutWithAsicSigning()
     {
         SetDefaults();
         SetupMocksWithAsiceSigning();
-        return new AsicEncrypter(AsiceBuilderFactoryMock.Object, _encryptionServiceFactoryMock.Object, _certificateHolder);
+        return new AsicEncrypter(AsiceBuilderFactoryMock.Object, EncryptionServiceFactoryMock.Object, _certificateHolder);
     }
 
     internal MemoryStream RandomStream
@@ -99,7 +99,7 @@ internal class AsicEncrypterFixture : IDisposable
                 outStream.Seek(0L, SeekOrigin.Begin);
             })
             .Returns(AsiceBuilderMock.Object);
-        _encryptionServiceFactoryMock.Setup(_ => _.Create(It.IsAny<X509Certificate>()))
+        EncryptionServiceFactoryMock.Setup(_ => _.Create(It.IsAny<X509Certificate>()))
             .Returns(EncryptionServiceMock.Object);
 
         AsiceBuilderMock.Setup(_ => _.AddFile(It.IsAny<Stream>(), It.IsAny<string>()))
@@ -129,7 +129,7 @@ internal class AsicEncrypterFixture : IDisposable
                 outStream.Seek(0L, SeekOrigin.Begin);
             })
             .Returns(AsiceBuilderMock.Object);
-        _encryptionServiceFactoryMock.Setup(_ => _.Create(It.IsAny<X509Certificate>()))
+        EncryptionServiceFactoryMock.Setup(_ => _.Create(It.IsAny<X509Certificate>()))
             .Returns(EncryptionServiceMock.Object);
 
         AsiceBuilderMock.Setup(_ => _.AddFile(It.IsAny<Stream>(), It.IsAny<string>()))
