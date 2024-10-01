@@ -23,8 +23,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="KS.Fiks.ASiC-E" Version="2.0.1" />
-      <PackageReference Include="KS.Fiks.Crypto" Version="2.0.2" />
+      <PackageReference Include="KS.Fiks.ASiC-E" Version="3.0.0" />
+      <PackageReference Include="KS.Fiks.Crypto" Version="2.0.3" />
     </ItemGroup>
 
     <ItemGroup>
