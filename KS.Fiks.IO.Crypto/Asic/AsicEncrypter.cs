@@ -6,7 +6,7 @@ namespace KS.Fiks.IO.Crypto.Asic;
 public class AsicEncrypter(
     IAsiceBuilderFactory asiceBuilderFactory,
     IEncryptionServiceFactory encryptionServiceFactory,
-    ICertificateHolder signingCertificateHolder = null)
+    ICertificateHolder? signingCertificateHolder = null)
     : IAsicEncrypter
 {
     private readonly IAsiceBuilderFactory _asiceBuilderFactory = asiceBuilderFactory ?? new AsiceBuilderFactory();

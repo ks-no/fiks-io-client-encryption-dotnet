@@ -12,7 +12,7 @@ public class AsiceBuilderFactory : IAsiceBuilderFactory
     public IAsiceBuilder<AsiceArchive> GetBuilder(
         Stream outStream,
         MessageDigestAlgorithm messageDigestAlgorithm,
-        ICertificateHolder certificateHolder)
+        ICertificateHolder? certificateHolder)
     {
         return AsiceBuilder.Create(outStream, messageDigestAlgorithm, certificateHolder);
     }

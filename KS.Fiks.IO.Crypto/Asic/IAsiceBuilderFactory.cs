@@ -9,5 +9,5 @@ public interface IAsiceBuilderFactory
     IAsiceBuilder<AsiceArchive> GetBuilder(
         Stream outStream,
         MessageDigestAlgorithm messageDigestAlgorithm,
-        ICertificateHolder certificateHolder);
+        ICertificateHolder? certificateHolder);
 }
