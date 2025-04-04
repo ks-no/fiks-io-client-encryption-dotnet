@@ -7,7 +7,7 @@ public class AsicDecrypter(IDecryptionService decryptionService) : IAsicDecrypte
 {
     public async Task WriteDecrypted(Task<Stream> encryptedZipStream, string outPath)
     {
-        await using var fileStream = new FileStream(outPath, FileMode.OpenOrCreate);
+        using var fileStream = new FileStream(outPath, FileMode.OpenOrCreate);
         
         try
         {
@@ -37,12 +37,12 @@ public class AsicDecrypter(IDecryptionService decryptionService) : IAsicDecrypte
     {
         var payloads = new List<StreamPayload>();
 
-        await using var stream = await Decrypt(encryptedZipStream).ConfigureAwait(false);
+        using var stream = await Decrypt(encryptedZipStream).ConfigureAwait(false);
         var asiceReader = new AsiceReader().Read(stream);
 
         foreach (var entry in asiceReader.Entries)
         {
-            await using var entryStream = entry.OpenStream();
+            using var entryStream = entry.OpenStream();
             var memoryStream = new MemoryStream();
 
             await entryStream.CopyToAsync(memoryStream).ConfigureAwait(false);
