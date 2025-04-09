@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <Title>KS Fiks IO Crypto</Title>
-        <VersionPrefix>1.0.6</VersionPrefix>
+        <VersionPrefix>1.0.7</VersionPrefix>
         <RootNamespace>KS.Fiks.IO.Crypto</RootNamespace>
         <PackageProjectUrl>https://github.com/ks-no/fiks-io-client-encryption-dotnet</PackageProjectUrl>
         <RepositoryUrl>https://github.com/ks-no/fiks-io-client-encryption-dotnet.git</RepositoryUrl>
