@@ -26,7 +26,7 @@
 
     <ItemGroup>
       <PackageReference Include="KS.Fiks.ASiC-E" Version="3.0.7-alpha.reviewpr232.1" />
-      <PackageReference Include="KS.Fiks.Crypto" Version="3.0.1" />
+      <PackageReference Include="KS.Fiks.Crypto" Version="3.0.2" />
     </ItemGroup>
 
     <ItemGroup>
