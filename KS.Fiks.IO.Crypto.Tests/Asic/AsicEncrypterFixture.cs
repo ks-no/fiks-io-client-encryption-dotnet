@@ -162,6 +162,11 @@ internal class AsicEncrypterFixture : IDisposable
             return _asymmetricKeyParameter;
         }
 
+        public IReadOnlyList<X509Certificate> GetCertificateChain()
+        {
+            throw new NotImplementedException();
+        }
+
         public X509Certificate GetPublicCertificate()
         {
             return _certificate;
