@@ -19,5 +19,5 @@ public class FilePayload : IPayload
 
     public string Filename => Path.GetFileName(_path);
 
-    public Stream Payload => new FileStream(_path, FileMode.Open, FileAccess.Read);
+    public Stream Payload => new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read);
 }
