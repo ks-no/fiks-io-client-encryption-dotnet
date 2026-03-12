@@ -12,12 +12,12 @@ public class FilePayload : IPayload
         }
 
         // Make sure file can be read. Will throw if not.
-        File.Open(path, FileMode.Open, FileAccess.Read).Dispose();
+        File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read).Dispose();
 
         _path = path;
     }
 
     public string Filename => Path.GetFileName(_path);
 
-    public Stream Payload => new FileStream(_path, FileMode.Open, FileAccess.Read);
+    public Stream Payload => new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read);
 }
