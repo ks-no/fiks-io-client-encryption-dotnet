@@ -1,6 +1,6 @@
 # KS.Fiks.IO.Crypto
 
-.NET library for ASiC-E encryption with Fiks IO clients.
+.NET library for ASiC-E signing and encryption with Fiks IO clients.
 
 Used by both fiks-io-client-dotnet and fiks-io-send-client-dotnet.
 
