@@ -35,7 +35,7 @@ var encrypter = new AsicEncrypter(
 
 IList<IPayload> payloads = new List<IPayload>
 {
-    new StreamPayload(File.OpenRead("document.pdf"), "document.pdf"),
+    new FilePayload("document.pdf"),
     new StringPayload("Hello, Fiks IO!", "message.txt"),
 };
 
@@ -51,12 +51,10 @@ using KS.Fiks.IO.Crypto.Asic;
 using KS.Fiks.IO.Crypto.Configuration;
 
 // Using PEM key files
-var signingConfig = new AsiceSigningConfiguration(
-    publicKeyPath: "signing-cert.pem",
-    privateKeyPath: "signing-key.pem");
+var signingConfig = new AsiceSigningConfiguration("signing-cert.pem", "signing-key.pem");
 
-// Or using an X509Certificate2 that holds the private key
-var signingConfig = new AsiceSigningConfiguration(myCertificate);
+// Or using an X509Certificate2 that holds the private key:
+// var signingConfig = new AsiceSigningConfiguration(myCertificate);
 
 var signingCertHolder = AsicSigningCertificateHolderFactory.Create(signingConfig);
 
@@ -70,13 +68,13 @@ Stream encryptedStream = encrypter.Encrypt(recipientPublicKey, payloads);
 
 ### Decrypting
 
-Use `AsicDecrypter` to decrypt an incoming ASiC-E stream.
+Use `AsicDecrypter` to decrypt an incoming ASiC-E stream. The `IDecryptionService` is created via `DecryptionService.Create` from the `KS.Fiks.Crypto` package.
 
 ```csharp
-using KS.Fiks.IO.Crypto.Asic;
 using KS.Fiks.Crypto;
+using KS.Fiks.IO.Crypto.Asic;
 
-IDecryptionService decryptionService = /* provided by KS.Fiks.Crypto */;
+IDecryptionService decryptionService = DecryptionService.Create(privateKeys);
 var decrypter = new AsicDecrypter(decryptionService);
 
 // Decrypt to a stream
@@ -98,8 +96,8 @@ foreach (var payload in payloads)
 
 | Type | Description |
 |------|-------------|
+| `FilePayload(string path)` | Read from a file on disk |
 | `StreamPayload(Stream, string filename)` | Wrap an existing stream |
-| `FilePayload(string filePath)` | Read from a file on disk |
 | `StringPayload(string content, string filename)` | Encode a string as UTF-8 |
 
 ## License
