@@ -106,13 +106,17 @@ jobs:
           path: bom.json
           if-no-files-found: ignore
 
+      - name: Stage Packages
+        run: |
+          mkdir -p staging
+          find . -path '*/Release/*.nupkg' -exec cp {} staging/ \;
+          find . -path '*/Release/*.snupkg' -exec cp {} staging/ \;
+
       - name: Upload Packages
         uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
-          path: |
-            **/Release/*.nupkg
-            **/Release/*.snupkg
+          path: staging/
           if-no-files-found: error
 
       - name: Push to Artifactory
