@@ -106,12 +106,6 @@ jobs:
           path: bom.json
           if-no-files-found: ignore
 
-      - name: Sign Packages
-        uses: ks-no/github-actions-public/dotnet-sign-nuget-packages@main
-        with:
-          certificate-base64: ${{ secrets.CODE_SIGN_CERT_BASE64 }}
-          certificate-password: ${{ secrets.CODE_SIGN_PFX_PASS }}
-
       - name: Upload Packages
         uses: actions/upload-artifact@v4
         with:
@@ -165,27 +159,38 @@ jobs:
           fail-on-error: false
 
   push-nuget-org:
-    name: Push to NuGet.org
-    needs: [initialize, build-linux, build-windows]
+    needs: [ initialize, build-linux, build-windows ]
     if: |
       (github.event.inputs.isRelease == 'true' || github.event.inputs.pushToNugetOrg == 'true') &&
       !startsWith(github.ref, 'refs/heads/dependabot/')
     runs-on: windows-latest
-
+    permissions:
+      id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Sign NuGet packages
+        uses: ks-no/github-actions-public/dotnet-sign-nuget-packages@main
         with:
-          name: nuget-packages
-          path: packages
+          artifact-name: nuget-packages
+          package-path: packages
+          sm-host: ${{ vars.SM_HOST }}
+          sm-keypair-alias: ${{ vars.SM_KEYPAIR_ALIAS }}
+          sm-api-key: ${{ secrets.SM_API_KEY }}
+          sm-client-cert-file-base64: ${{ secrets.SM_CLIENT_CERT_FILE_B64 }}
+          sm-client-cert-password: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
 
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-
-      - uses: ks-no/github-actions-public/dotnet-push-to-nuget-org@main
+      - name: Verify signature
+        shell: bash
+        run: dotnet nuget verify packages/*.nupkg --all
+      - name: NuGet login (OIDC)
+        uses: NuGet/login@v1
+        id: login
         with:
-          api-key: ${{ secrets.NUGET_API_KEY }}
-          package-path: packages
+          user: ${{ secrets.NUGET_USER }}
+      - name: Push
+        run: dotnet nuget push packages/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
   release:
     name: Release
