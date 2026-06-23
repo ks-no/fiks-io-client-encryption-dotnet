@@ -168,7 +168,7 @@ jobs:
       id-token: write
     steps:
       - name: Sign NuGet packages
-        uses: ks-no/github-actions-public/dotnet-sign-nuget-packages@main
+        uses: ks-no/github-actions-public/dotnet-sign-nuget-packages@6c94bb9073e2619e18b74410ebfed4b40b4f6506
         with:
           artifact-name: nuget-packages
           package-path: packages
