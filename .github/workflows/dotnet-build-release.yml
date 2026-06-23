@@ -177,9 +177,9 @@ jobs:
           artifact-name: nuget-packages
           package-path: packages
           sm-host: ${{ vars.SM_HOST }}
-          sm-keypair-alias: ${{ vars.SM_KEYPAIR_ALIAS }}
+          sm-keypair-alias: ${{ vars.SM_KEY_PAIR_ALIAS }}
           sm-api-key: ${{ secrets.SM_API_KEY }}
-          sm-client-cert-file-base64: ${{ secrets.SM_CLIENT_CERT_FILE_B64 }}
+          sm-client-cert-file-base64: ${{ secrets.SM_CLIENT_CERT_FILE }}
           sm-client-cert-password: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
 
       - uses: actions/setup-dotnet@v4
