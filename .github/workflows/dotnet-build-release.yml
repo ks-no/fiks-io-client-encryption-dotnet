@@ -50,7 +50,7 @@ jobs:
       build-opts: ${{ steps.version.outputs.build-opts }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: ks-no/github-actions-public/checkout@main
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -70,7 +70,7 @@ jobs:
     timeout-minutes: 90
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: ks-no/github-actions-public/checkout@main
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -84,7 +84,7 @@ jobs:
           artifactory-password: ${{ secrets.ARTIFACTORY_PASSWORD }}
 
       - name: Test Results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3.0.0
         if: always()
         with:
           name: Tests (Linux)
@@ -100,7 +100,7 @@ jobs:
 
       - name: Upload SBOM
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        uses: actions/upload-artifact@v4
+        uses: ks-no/github-actions-public/upload-artifact@main
         with:
           name: sbom
           path: bom.json
@@ -113,7 +113,7 @@ jobs:
           find . -path '*/Release/*.snupkg' -exec cp {} staging/ \;
 
       - name: Upload Packages
-        uses: actions/upload-artifact@v4
+        uses: ks-no/github-actions-public/upload-artifact@main
         with:
           name: nuget-packages
           path: staging/
@@ -138,7 +138,7 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: ks-no/github-actions-public/checkout@main
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -154,7 +154,7 @@ jobs:
           test-verbosity: 'detailed'
 
       - name: Test Results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3.0.0
         if: always()
         with:
           name: Tests (Windows)
@@ -172,7 +172,7 @@ jobs:
       id-token: write
     steps:
       - name: Sign NuGet packages
-        uses: ks-no/github-actions-public/dotnet-sign-nuget-packages@6c94bb9073e2619e18b74410ebfed4b40b4f6506
+        uses: ks-no/github-actions-public/dotnet-sign-nuget-packages@main
         with:
           artifact-name: nuget-packages
           package-path: packages
@@ -182,7 +182,7 @@ jobs:
           sm-client-cert-file-base64: ${{ secrets.SM_CLIENT_CERT_FILE }}
           sm-client-cert-password: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: '8.0.x'
       - name: Verify signature
@@ -211,14 +211,14 @@ jobs:
           ks_github_app_id: ${{ vars.KS_RUNNER_APP_ID }}
           ks_github_app_private_key: ${{ secrets.KS_RUNNER_PRIVATE_KEY }}
 
-      - uses: actions/checkout@v6
+      - uses: ks-no/github-actions-public/checkout@main
         with:
           fetch-depth: 0
           fetch-tags: true
           submodules: true
           token: ${{ steps.setup-github-app.outputs.app_token }}
 
-      - uses: actions/download-artifact@v4
+      - uses: ks-no/github-actions-public/download-artifact@main
         with:
           name: nuget-packages
           path: release-packages
