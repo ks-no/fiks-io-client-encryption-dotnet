@@ -35,3 +35,5 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
+# Release job downloads signed packages here (create-github-release); never commit them
+release-packages/
