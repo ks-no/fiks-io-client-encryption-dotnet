@@ -104,7 +104,7 @@ jobs:
           nuget-user: ${{ secrets.NUGET_USER }}
           package-path: packages
           verify-signature: ${{ inputs.isRelease == true }}
-          api-key: ${{ secrets.NUGET_API_KEY }}
+          api-key: ${{ inputs.publishMode != 'oidc' && secrets.NUGET_API_KEY || '' }}
 
   release:
     name: Release
